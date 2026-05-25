@@ -7,11 +7,21 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node src/scripts/build-changelog.mjs && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "audit:sources": "node scripts/audit-sources.mjs",
+    "audit:numbers": "node scripts/audit-numbers.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "visual-check": "node scripts/visual-check.mjs",
+    "audit:all": "npm run audit:sources && npm run audit:numbers && npm run a11y && npm run visual-check"
   },
   "dependencies": {
     "astro": "^6.3.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0",
+    "playwright": "^1.60.0"
   }
 }
