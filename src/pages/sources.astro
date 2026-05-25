@@ -1,0 +1,109 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const sources = await getCollection('sources');
+---
+
+<Base title="Sources">
+  <h1>Sources</h1>
+  <p>All citations used on this site. Retracted sources are retained for transparency.</p>
+
+  {sources.length === 0 ? (
+    <p>No sources yet.</p>
+  ) : (
+    <div class="sources-table-wrap">
+      <table class="sources-table">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Publisher</th>
+            <th scope="col">Author</th>
+            <th scope="col">Published</th>
+            <th scope="col">Accessed</th>
+            <th scope="col">Last Verified</th>
+            <th scope="col">Claim Supported</th>
+            <th scope="col">Primary</th>
+            <th scope="col">URL</th>
+            <th scope="col">Archive</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sources.map((source) => (
+            <tr id={source.id} class={source.data.retracted ? 'source-row--retracted' : ''}>
+              <td>{source.data.title}</td>
+              <td>{source.data.publisher}</td>
+              <td>{source.data.author ?? '—'}</td>
+              <td>{source.data.publishedDate}</td>
+              <td>{source.data.accessedDate}</td>
+              <td>{source.data.lastVerified}</td>
+              <td>{source.data.claimSupported}</td>
+              <td>{source.data.primarySource ? 'Yes' : 'No'}</td>
+              <td>
+                <a href={source.data.url} rel="noopener noreferrer" target="_blank">Link ↗</a>
+              </td>
+              <td>
+                <a href={source.data.archiveUrl} rel="noopener noreferrer" target="_blank">Archive ↗</a>
+              </td>
+              <td>
+                {source.data.retracted ? (
+                  <span class="retracted-badge">
+                    Retracted
+                    {source.data.retractedDate && ` ${source.data.retractedDate}`}
+                    {source.data.retractedReason && `: ${source.data.retractedReason}`}
+                  </span>
+                ) : (
+                  <span class="active-badge">Active</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+</Base>
+
+<style>
+  .sources-table-wrap {
+    overflow-x: auto;
+    margin-top: 1.5rem;
+  }
+
+  .sources-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .sources-table th,
+  .sources-table td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+    vertical-align: top;
+  }
+
+  .sources-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .source-row--retracted td {
+    opacity: 0.65;
+  }
+
+  .retracted-badge {
+    color: #c00;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .active-badge {
+    color: #1a7f37;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+</style>

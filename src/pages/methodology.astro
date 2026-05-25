@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro';
+import counterInputs from '../data/counter-inputs.json';
+
+const BUILD_TS = Number(import.meta.env.BUILD_TIMESTAMP_MS) || Date.now();
+const buildDateStr = new Date(BUILD_TS).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+---
+
+<Base title="Methodology">
+  <h1>Methodology</h1>
+
+  <section>
+    <h2>Counter Math</h2>
+    <p>The live taxpayer-cost counter uses the following formula:</p>
+    <pre class="formula-block"><code>referenceMs = Math.max(Date.now(), BUILD_TIMESTAMP)
+elapsedMs   = Math.max(0, referenceMs - Date.parse(facilityOpenedAt))
+total       = Math.floor(
+                (oneTimeConstructionCostUSD ?? 0)
+              + dailyOperatingCostUSD * (elapsedMs / 86_400_000)
+              )</code></pre>
+    <p>
+      The counter ticks once per second (integer steps). Sub-second smoothing is intentionally
+      omitted — real spending is stepwise and daily-aggregated; finer granularity would imply
+      false precision.
+    </p>
+    <p>
+      <strong>Clock-skew guard:</strong> <code>BUILD_TIMESTAMP</code> is injected from
+      <code>SOURCE_DATE_EPOCH</code> at build time.
+      <code>referenceMs = Math.max(Date.now(), BUILD_TIMESTAMP)</code> prevents wrong-clock
+      devices from showing $0 or implausibly-future totals. The counter is monotonic
+      non-decreasing.
+    </p>
+  </section>
+
+  <section>
+    <h2>Current Inputs</h2>
+    <table class="inputs-table">
+      <tbody>
+        <tr>
+          <th scope="row">Facility opened at</th>
+          <td>{counterInputs.facilityOpenedAt ?? 'Not yet confirmed'}</td>
+        </tr>
+        <tr>
+          <th scope="row">One-time construction cost</th>
+          <td>
+            {counterInputs.oneTimeConstructionCostUSD != null
+              ? `$${counterInputs.oneTimeConstructionCostUSD.toLocaleString('en-US')}`
+              : 'Not yet confirmed'}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Daily operating cost</th>
+          <td>
+            {counterInputs.dailyOperatingCostUSD != null
+              ? `$${counterInputs.dailyOperatingCostUSD.toLocaleString('en-US')}/day`
+              : 'Not yet confirmed'}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Confidence level</th>
+          <td><code>{counterInputs.confidence}</code></td>
+        </tr>
+        <tr>
+          <th scope="row">Last verified</th>
+          <td>{counterInputs.lastVerified ?? 'N/A'}</td>
+        </tr>
+        <tr>
+          <th scope="row">Source IDs</th>
+          <td>
+            {counterInputs.inputsSourceIds.length > 0
+              ? counterInputs.inputsSourceIds.map((id, i) => (
+                  <>
+                    {i > 0 && ', '}
+                    <a href={`/sources#${id}`}>{id}</a>
+                  </>
+                ))
+              : 'None yet'}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Launch Gate</h2>
+    <p>The live counter is only shown when the data meets a minimum evidence threshold:</p>
+    <ul>
+      <li>
+        <strong>Contracted</strong> — counter shown only if <code>inputsSourceIds</code> contains
+        at least one source with <code>primarySource: true</code> (federal contract, state
+        appropriation bill, official budget doc, or court filing).
+      </li>
+      <li>
+        <strong>Reported estimate</strong> — counter shown only if <code>inputsSourceIds</code>
+        contains at least one named-outlet citation (Miami Herald, AP, Reuters, NYT, WaPo,
+        ProPublica, Tampa Bay Times, etc.) AND the UI visibly labels the figure
+        "reported estimate."
+      </li>
+      <li>
+        <strong>Projection</strong> — <em>not eligible</em> for the live counter; the
+        pending-verification banner is shown instead.
+      </li>
+    </ul>
+    <p>
+      If the gate is not met, the counter section is replaced by:
+      <em>"Figures pending verification — site will update when primary sources confirm operating cost."</em>
+    </p>
+    <p>
+      A manual kill switch (<code>PUBLIC_COUNTER_DISABLED=true</code> build-time env var) forces
+      the banner regardless of gate status, for pausing the live tick within minutes if a figure
+      is challenged post-launch.
+    </p>
+  </section>
+
+  <section>
+    <h2>Build Provenance</h2>
+    <p>
+      This build was generated on <strong>{buildDateStr}</strong>.
+      <code>BUILD_TIMESTAMP_MS</code> is derived from
+      <code>SOURCE_DATE_EPOCH=$(git log -1 --format=%ct -- src/data/sources.json src/data/counter-inputs.json)</code>,
+      giving a deterministic, reproducible build tied to the last data change.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .formula-block {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .inputs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+  }
+
+  .inputs-table th,
+  .inputs-table td {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .inputs-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+    width: 220px;
+    white-space: nowrap;
+  }
+</style>

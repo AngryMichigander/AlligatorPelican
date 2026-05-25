@@ -1,0 +1,41 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'AlligatorPelican' } = Astro.props;
+const pageTitle = title === 'AlligatorPelican' ? title : `${title} — AlligatorPelican`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="site-logo">alligatorpelican.com</a>
+    </header>
+    <main class="site-main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p class="site-footer__disclaimer">
+        This site is political commentary and advocacy. Factual claims are cited; opinions are labeled.
+        Corrections: <a href="mailto:corrections@alligatorpelican.com">corrections@alligatorpelican.com</a>
+      </p>
+      <nav class="site-footer__nav" aria-label="Footer navigation">
+        <a href="/about">About</a> ·
+        <a href="/methodology">Methodology</a> ·
+        <a href="/sources">Sources</a> ·
+        <a href="/changelog">Changelog</a>
+      </nav>
+    </footer>
+  </body>
+</html>

@@ -1,17 +1,47 @@
 ---
-
+import Base from '../layouts/Base.astro';
+import Counter from '../components/Counter.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base title="AlligatorPelican">
+  <section class="hero">
+    <h1>alligatorpelican.com</h1>
+    <p class="hero__tagline">the cost, in dollars and lives</p>
+    <Counter />
+    <p class="hero__methodology-link">
+      Based on reported estimates — see <a href="/methodology">methodology</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>What is Alligator Alcatraz?</h2>
+    <!-- T6: populate with cited bullets (location, purpose, opening date, operator, capacity) -->
+    <p>Content pending source verification.</p>
+  </section>
+
+  <section>
+    <h2>The Cost</h2>
+    <Counter />
+    <p>
+      Per-detainee comparisons pending primary-source data.
+      See <a href="/methodology">/methodology</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Environmental Harm</h2>
+    <!-- T6: populate with cited Everglades wetland, endangered species, NEPA, water-table content -->
+    <p>Environmental impact section pending source verification.</p>
+  </section>
+
+  <section>
+    <h2>Human Cost</h2>
+    <!-- T6: populate with cited detainee conditions, legal filings, medical/heat concerns -->
+    <p>Section pending source verification.</p>
+  </section>
+
+  <section>
+    <h2>Sources</h2>
+    <p><a href="/sources">View all sources →</a></p>
+  </section>
+</Base>
