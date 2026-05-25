@@ -1,7 +1,26 @@
 /* ============================================================
-   AlligatorPelican — global styles
-   Plain CSS; no framework dependency.
+   AlligatorPelican — National Debt Clock visual identity
+   Black bg · Amber LED counter · Monospace body · No SaaS
    ============================================================ */
+
+/* ---------- Font imports ---------------------------------- */
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/700.css';
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/700.css';
+
+/* ---------- Design tokens --------------------------------- */
+:root {
+  --bg:         #000000;
+  --fg:         #e8e6df;
+  --led:        #ffb000;
+  --led-dim:    #6b4a00;
+  --accent-red: #c0392b;
+  --mono:       'JetBrains Mono', 'Berkeley Mono', ui-monospace, 'Courier New', monospace;
+  --sans:       'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --max-w:      860px;
+  --gutter:     1.25rem;
+}
 
 /* ---------- Reset & base ---------------------------------- */
 *, *::before, *::after {
@@ -9,11 +28,12 @@
 }
 
 html {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--mono);
   font-size: 16px;
-  line-height: 1.6;
-  color: #1a1a1a;
-  background: #fff;
+  line-height: 1.65;
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -21,192 +41,410 @@ body {
   padding: 0;
 }
 
+/* ---------- Links ----------------------------------------- */
 a {
-  color: #0066cc;
+  color: var(--fg);
   text-decoration: underline;
+  text-decoration-color: var(--led-dim);
+  text-underline-offset: 3px;
+  transition: color 0.1s;
 }
 
 a:hover {
-  color: #004499;
+  color: var(--led);
+  text-decoration-color: var(--led);
+}
+
+/* ---------- Headings -------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--sans);
+  font-variant: small-caps;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  margin: 0 0 0.5rem;
+}
+
+h2 {
+  font-size: 0.82rem;
+  margin: 2rem 0 0.9rem;
+  border-bottom: 1px solid #181818;
+  padding-bottom: 0.4rem;
+}
+
+h3 {
+  font-size: 0.78rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+/* >>> prefix on section headings */
+section h2::before {
+  content: '>>> ';
+  color: var(--led-dim);
+  font-family: var(--mono);
+  font-variant: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+/* ---------- Body text ------------------------------------- */
+p {
+  margin: 0 0 0.9rem;
+  font-size: 0.9rem;
+}
+
+ul, ol {
+  margin: 0 0 0.9rem;
+  padding-left: 1.5rem;
+  font-size: 0.9rem;
+}
+
+li {
+  margin-bottom: 0.35rem;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  color: var(--fg);
+  background: #0d0d0d;
+  padding: 0.1em 0.35em;
+  border: 1px solid #1e1e1e;
+}
+
+pre {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  background: #080808;
+  border: 1px solid #2a2a2a;
+  padding: 1.1rem 1.35rem;
+  overflow-x: auto;
+  line-height: 1.6;
+  color: var(--fg);
+  margin: 0 0 1rem;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font-size: inherit;
 }
 
 /* ---------- Layout ---------------------------------------- */
 .site-header,
 .site-main,
 .site-footer {
-  max-width: 800px;
+  max-width: var(--max-w);
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 var(--gutter);
 }
 
+/* ---------- Site header ---------------------------------- */
 .site-header {
-  padding-top: 2rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #e0e0e0;
+  padding-top: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #181818;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.65rem 2rem;
 }
 
+.site-logo {
+  font-family: var(--sans);
+  font-variant: small-caps;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  color: var(--fg);
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity 0.1s;
+}
+
+.site-logo:hover {
+  color: var(--fg);
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* ---------- Site nav ------------------------------------- */
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0;
+  line-height: 1;
+}
+
+.site-nav a {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+  text-decoration: none;
+  /* 0.65 opacity → effective ~6.1:1 contrast on black — clears WCAG AA */
+  opacity: 0.65;
+  transition: color 0.1s, opacity 0.1s;
+  white-space: nowrap;
+  margin-right: 1.1rem;
+}
+
+.site-nav a::before { content: '[ '; }
+.site-nav a::after  { content: ' ]'; }
+
+.site-nav a:hover {
+  color: var(--led);
+  opacity: 1;
+  text-decoration: none;
+}
+
+/* ---------- Site footer ---------------------------------- */
+/* Single opacity on the container — children inherit it without compounding.
+   0.6 opacity on --fg gives ~5.8:1 contrast on black — clears WCAG AA.
+   Never stack opacity on both a container and its children (e.g. p + a). */
 .site-footer {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  padding-bottom: 2rem;
-  border-top: 2px solid #e0e0e0;
-  font-size: 0.875rem;
-  color: #555;
+  margin-top: 4rem;
+  padding-top: 1.25rem;
+  padding-bottom: 2.5rem;
+  border-top: 3px solid var(--led-dim);
+  font-size: 0.76rem;
+  font-family: var(--mono);
+  color: var(--fg);
+  opacity: 0.6;
+}
+
+.site-footer p {
+  font-size: 0.76rem;
+  margin: 0 0 0.4rem;
+  /* no opacity here — container already sets 0.6 */
+}
+
+.site-footer a {
+  color: var(--fg);
+  text-decoration-color: var(--led-dim);
+  /* no opacity here — inherited from container */
+}
+
+.site-footer a:hover {
+  color: var(--led);
+  opacity: 1;
+}
+
+.site-footer__nav {
+  margin-top: 0.65rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.1rem;
+  /* no opacity here — inherited from container */
+}
+
+.site-footer__nav a {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 /* ---------- Hero ------------------------------------------ */
 .hero {
-  padding: 3rem 0 2rem;
-  text-align: center;
+  padding: 4rem 0 1.5rem;
 }
 
 .hero h1 {
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 800;
-  margin: 0 0 0.5rem;
-  line-height: 1.1;
+  font-size: clamp(1.4rem, 5vw, 2.4rem);
+  margin: 0 0 0.35rem;
+  letter-spacing: 0.14em;
 }
 
 .hero__tagline {
-  font-size: 1.15rem;
-  color: #444;
-  margin: 0 0 2rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--fg);
+  /* 0.6 opacity → ~5.8:1 contrast on black — WCAG AA */
+  opacity: 0.6;
+  margin: 0 0 2.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .hero__methodology-link {
-  font-size: 0.875rem;
-  color: #555;
+  font-size: 0.75rem;
+  font-family: var(--mono);
+  color: var(--fg);
+  opacity: 0.6;
+  margin-top: 1rem;
+}
+
+.hero__methodology-link a {
+  opacity: 1;
 }
 
 /* ---------- Live counter ---------------------------------- */
 .counter-live {
-  margin: 2rem auto;
-  padding: 2rem 1.5rem;
+  margin: 0 0 2rem;
+  padding: 2.5rem 2rem 1.75rem;
+  background: var(--bg);
+  border: 3px solid #252525;
   text-align: center;
-  border: 2px solid #d0d0d0;
-  border-radius: 8px;
-  background: #fafafa;
 }
 
 .counter-live__total {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-family: var(--mono);
+  font-size: clamp(2.5rem, 9vw, 6rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #1a1a1a;
-  min-height: 1.2em;
-  /* Prevent layout shift as digits change */
+  letter-spacing: 0.1em;
+  color: var(--led);
+  text-shadow:
+    0 0 4px var(--led),
+    0 0 24px rgba(255, 176, 0, 0.12);
+  min-height: 1.15em;
   font-variant-numeric: tabular-nums;
+  line-height: 1.05;
 }
 
 .counter-live__noscript {
-  margin-top: 0.75rem;
-  font-size: 0.9rem;
-  color: #555;
-  padding: 0.75rem 1rem;
-  background: #f5f5f5;
-  border-radius: 4px;
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: var(--fg);
+  opacity: 0.55;
+  padding: 0.65rem 1rem;
+  border: 1px solid #252525;
+  font-family: var(--mono);
 }
 
 .counter-live__meta {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 1.1rem;
   flex-wrap: wrap;
 }
 
 .counter-live__verified {
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 0.7rem;
+  font-family: var(--mono);
+  color: var(--fg);
+  /* 0.6 → ~5.8:1 on black — WCAG AA */
+  opacity: 0.6;
 }
 
 .counter-live__formula {
-  margin-top: 0.75rem;
-  font-size: 0.8rem;
-  color: #666;
-  line-height: 1.5;
+  margin-top: 0.65rem;
+  font-size: 0.7rem;
+  font-family: var(--mono);
+  /* Use direct color (not opacity) so child <a> elements with explicit color
+     (e.g. sup.cite a { color: var(--led) }) render at full brightness.
+     rgba(232,230,223,0.6) on black → ~5.8:1 for formula text — WCAG AA. */
+  color: rgba(232, 230, 223, 0.6);
+  line-height: 1.55;
 }
 
 .counter-live__formula code {
-  font-family: 'Courier New', Courier, monospace;
-  background: #f0f0f0;
-  padding: 0.1em 0.3em;
-  border-radius: 3px;
+  font-family: var(--mono);
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* ---------- Confidence badge (no rounded corners) --------- */
+.confidence-pill {
+  display: inline-block;
+  padding: 0.1em 0.55em;
+  border-radius: 0;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  border: 1px solid currentColor;
+}
+
+.confidence-pill--contracted {
+  color: #4ade80;
+}
+
+.confidence-pill--reported_estimate {
+  color: var(--led);
+}
+
+.confidence-pill--projection {
+  color: var(--fg);
+  opacity: 0.5;
 }
 
 /* ---------- Pending-verification banner ------------------- */
 .counter-banner {
-  margin: 2rem auto;
-  padding: 1.5rem;
-  background: #fffbe6;       /* light yellow — distinct from content */
-  border: 1px solid #f0d060;
-  border-left: 4px solid #e6b800;
-  border-radius: 4px;
+  margin: 0 0 2rem;
+  padding: 1.75rem 2rem;
+  background: var(--bg);
+  border: 3px solid #252525;
 }
 
 .counter-banner__message {
-  font-weight: 600;
-  margin: 0 0 0.5rem;
-  color: #5a4500;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin: 0 0 0.65rem;
+  color: var(--accent-red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.counter-banner__message::before {
+  content: '■ ';
 }
 
 .counter-banner__known {
   margin: 0.5rem 0;
-  font-size: 0.95rem;
-  color: #3a2e00;
+  font-size: 0.86rem;
+  color: var(--fg);
 }
 
 .counter-banner__reason {
-  margin: 0.5rem 0 0;
-  color: #7a6a00;
-}
-
-/* ---------- Confidence pill ------------------------------- */
-.confidence-pill {
-  display: inline-block;
-  padding: 0.2em 0.65em;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  line-height: 1.4;
-}
-
-.confidence-pill--contracted {
-  background: #d4edda;
-  color: #155724;
-}
-
-.confidence-pill--reported_estimate {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.confidence-pill--projection {
-  background: #e2e3e5;
-  color: #383d41;
+  margin: 0.75rem 0 0;
+  font-size: 0.68rem;
+  font-family: var(--mono);
+  color: var(--fg);
+  opacity: 0.35;
 }
 
 /* ---------- Opinion blocks -------------------------------- */
 .opinion-block {
-  background: #f5f5f5;       /* light gray — visually distinct from fact blocks */
-  border-left: 4px solid #aaa;
+  background: transparent;
+  border: 1px dashed var(--led-dim);
   padding: 1rem 1.25rem;
   margin: 1.5rem 0;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0;
 }
 
 .opinion-block__label {
-  display: inline-block;
-  font-size: 0.7rem;
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.66rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #777;
-  margin-bottom: 0.4rem;
+  letter-spacing: 0.12em;
+  /* 0.65 on --fg → ~6.1:1 on black — WCAG AA. --led-dim is decorative only. */
+  color: var(--fg);
+  opacity: 0.65;
+  margin-bottom: 0.5rem;
+}
+
+.opinion-block__label::before {
+  content: '▼ ';
 }
 
 /* ---------- Cite superscript ------------------------------ */
@@ -216,44 +454,152 @@ sup.cite {
   line-height: 0;
 }
 
-sup.cite a,
-sup.cite--retracted a {
-  color: #0066cc;
+sup.cite a {
+  color: var(--led);
   text-decoration: none;
+  font-family: var(--mono);
 }
 
 sup.cite a:hover {
-  text-decoration: underline;
+  color: var(--led);
+  text-shadow: 0 0 4px var(--led);
+  text-decoration: none;
 }
 
 sup.cite--retracted {
   font-size: 0.65em;
   vertical-align: super;
   line-height: 0;
-  color: #999;
+  opacity: 0.4;
+}
+
+sup.cite--retracted a {
+  color: var(--fg);
+  text-decoration: none;
 }
 
 .cite__retracted-label {
   font-size: 0.85em;
-  color: #c00;
+  color: var(--accent-red);
 }
 
 /* ---------- Section spacing ------------------------------- */
 section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.75rem;
 }
 
-section h2 {
-  font-size: 1.5rem;
+/* ---------- Tables ---------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  font-family: var(--mono);
+}
+
+th, td {
+  padding: 0.45rem 0.75rem;
+  text-align: left;
+  border: 1px solid #1a1a1a;
+  vertical-align: top;
+}
+
+th {
+  background: #080808;
   font-weight: 700;
-  margin: 0 0 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 0.25rem;
+  color: var(--fg);
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  font-family: var(--sans);
+}
+
+td {
+  color: var(--fg);
+}
+
+/* ---------- Sources page ---------------------------------- */
+.sources-table-wrap {
+  overflow-x: auto;
+  margin-top: 1.5rem;
+}
+
+.source-row--retracted td {
+  opacity: 0.35;
+}
+
+.retracted-badge {
+  color: var(--accent-red);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.active-badge {
+  color: #4ade80;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ---------- Methodology / formula block ------------------- */
+.formula-block {
+  background: #060606;
+  border: 1px solid #2a2a2a;
+  padding: 1.1rem 1.35rem;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--led);
+  font-family: var(--mono);
+  border-radius: 0;
+}
+
+/* ---------- Inputs table on methodology page -------------- */
+.inputs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  margin-top: 0.75rem;
+}
+
+.inputs-table th,
+.inputs-table td {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #1a1a1a;
+  text-align: left;
+  vertical-align: top;
+}
+
+.inputs-table th {
+  background: #080808;
+  font-weight: 700;
+  width: 220px;
+  white-space: nowrap;
 }
 
 /* ---------- Responsive ------------------------------------ */
 @media (max-width: 600px) {
+  :root {
+    --gutter: 1rem;
+  }
+
+  .site-header {
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .site-nav a {
+    margin-right: 0.6rem;
+    margin-bottom: 0.15rem;
+  }
+
   .counter-live {
+    padding: 1.75rem 1rem 1.35rem;
+  }
+
+  .counter-live__total {
+    letter-spacing: 0.05em;
+  }
+
+  .counter-banner {
     padding: 1.25rem 1rem;
   }
 }

@@ -17,6 +17,8 @@
     "audit:all": "npm run audit:sources && npm run audit:numbers && npm run a11y && npm run visual-check"
   },
   "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/space-grotesk": "^5.2.10",
     "astro": "^6.3.7"
   },
   "devDependencies": {

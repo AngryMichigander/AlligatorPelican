@@ -51,10 +51,12 @@ async function main() {
     await waitForServer(`${BASE_URL}/`);
 
     const browser = await chromium.launch();
+    // @axe-core/playwright requires pages created via newContext(), not browser.newPage()
+    const context = await browser.newContext();
     const results = [];
 
     for (const route of ROUTES) {
-      const page = await browser.newPage();
+      const page = await context.newPage();
       await page.goto(`${BASE_URL}${route}`);
 
       const axeResults = await new AxeBuilder({ page }).analyze();
@@ -80,6 +82,7 @@ async function main() {
       await page.close();
     }
 
+    await context.close();
     await browser.close();
 
     const totalViolations = results.reduce((s, r) => s + r.violations.length, 0);
