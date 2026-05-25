@@ -313,5 +313,36 @@
     "retracted": false,
     "retractedReason": null,
     "retractedDate": null
+  },
+  {
+    "id": "democracynow-2025-09-disappeared",
+    "title": "Where Are the Detainees? Hundreds of 'Alligator Alcatraz' Prisoners Disappear from ICE Database",
+    "publisher": "Democracy Now!",
+    "author": "Amy Goodman / Shirsho Dasgupta (Miami Herald, interviewed)",
+    "url": "https://www.democracynow.org/2025/9/25/alligator_alcatraz",
+    "publishedDate": "2025-09-25",
+    "accessedDate": "2026-05-25",
+    "lastVerified": "2026-05-25",
+    "claimSupported": "Democracy Now! interviews Miami Herald investigative reporter Shirsho Dasgupta about his investigation with colleague Ana Ceballos. They obtained two rosters covering roughly 1,800 men detained at Alligator Alcatraz in July 2025; matching them to ICE's online locator system at the end of August showed around 800 had no records and roughly 450 returned 'Call ICE for details' — about two-thirds of the 1,800 with unknown whereabouts.",
+    "archiveUrl": "https://www.democracynow.org/2025/9/25/alligator_alcatraz",
+    "primarySource": false,
+    "retracted": false,
+    "retractedReason": null,
+    "retractedDate": null
+  },
+  {
+    "id": "snopes-2025-09-disappeared-factcheck",
+    "title": "Investigation found two-thirds of more than 1,800 detainees 'dropped off the grid' from 'Alligator Alcatraz'?",
+    "publisher": "Snopes",
+    "url": "https://www.snopes.com/news/2025/09/25/men-lost-from-alligator-alcatraz/",
+    "publishedDate": "2025-09-25",
+    "accessedDate": "2026-05-25",
+    "lastVerified": "2026-05-25",
+    "claimSupported": "Snopes fact-check rates as TRUE the claim that a Miami Herald investigation found roughly two-thirds of more than 1,800 detainees held at Alligator Alcatraz in July 2025 had gone missing from ICE's online locator database as of late August 2025.",
+    "archiveUrl": "https://www.snopes.com/news/2025/09/25/men-lost-from-alligator-alcatraz/",
+    "primarySource": false,
+    "retracted": false,
+    "retractedReason": null,
+    "retractedDate": null
   }
 ]

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Counter from '../components/Counter.astro';
+import DisappearanceCounter from '../components/DisappearanceCounter.astro';
 import Cite from '../components/Cite.astro';
 
 // Counter rendered once in the hero (it's the centerpiece). The Cost section
@@ -12,6 +13,7 @@ import Cite from '../components/Cite.astro';
     <h1>alligatorpelican.com</h1>
     <p class="hero__tagline">the cost, in dollars and lives</p>
     <Counter />
+    <DisappearanceCounter />
     <p class="hero__methodology-link">
       Based on reported estimates — see <a href="/methodology">methodology</a>.
     </p>
@@ -108,6 +110,11 @@ import Cite from '../components/Cite.astro';
       <li data-claim="aclu-lawsuit">
         The ACLU filed suit (H.C.R. v. Noem) in August 2025 alleging detainees were absent from ICE tracking systems and denied access to legal counsel.<Cite id="aclu-2025-08-lawsuit" />
       </li>
+      <li data-claim="disappearances-count">
+        A Miami Herald investigation by Shirsho Dasgupta and Ana Ceballos matched July 2025 detainee rosters against ICE's online locator at the end of August and found that roughly two-thirds of more than 1,800 men held at Alligator Alcatraz — around 800 with no records and roughly 450 returning "Call ICE for details" — could not be located.<Cite id="democracynow-2025-09-disappeared" /><Cite id="snopes-2025-09-disappeared-factcheck" />
+      </li>
+      <li data-claim="enforced-disappearances-amnesty">
+        Amnesty International's December 2025 report on Florida immigration detention facilities characterized the pattern of missing detainees and incommunicado holding as enforced disappearances.<Cite id="wlrn-2025-12-amnesty-torture" /></li>
       <li data-claim="medical-neglect">
         Prism Reports documented medical emergencies and inadequate medical care responses at the facility in August 2025.<Cite id="prism-2025-08-medical-neglect" />
       </li>

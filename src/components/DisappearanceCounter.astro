@@ -1,0 +1,39 @@
+---
+/**
+ * DisappearanceCounter.astro
+ *
+ * Static LED-styled counter showing the number of detainees missing from the
+ * ICE locator system per the Miami Herald investigation (snapshot as of late
+ * August 2025). NOT a live ticker — this is a fixed historical figure with
+ * an explicit "as of" label.
+ */
+import Cite from './Cite.astro';
+
+// Numbers from the Miami Herald investigation (via Democracy Now + Snopes).
+// Update these only when a new investigation publishes a verified count, and
+// move the prior figure into a "historical" section if you want to preserve it.
+const missingTotal = 1250; // ~800 no records + ~450 "Call ICE for details"
+const cohortTotal = 1800;
+const asOfDate = '2025-08-31';
+const cohortMonth = 'July 2025';
+---
+
+<section class="dcounter" aria-label="Detainees missing from ICE locator (snapshot)">
+  <div class="dcounter__label">
+    <span class="dcounter__label-prefix">SNAPSHOT</span>
+    Detainees missing from ICE locator
+  </div>
+
+  <div class="dcounter__total" id="dcounter-total" aria-live="off">
+    ≈ {missingTotal.toLocaleString('en-US')}
+  </div>
+
+  <div class="dcounter__sub">
+    of {cohortTotal.toLocaleString('en-US')} held in {cohortMonth} — roughly two-thirds
+  </div>
+
+  <p class="dcounter__provenance">
+    As of {asOfDate}. Single investigation, not a live count.
+    <Cite id="democracynow-2025-09-disappeared" /><Cite id="snopes-2025-09-disappeared-factcheck" />
+  </p>
+</section>

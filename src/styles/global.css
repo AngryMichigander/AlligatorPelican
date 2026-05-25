@@ -386,6 +386,77 @@ pre code {
   opacity: 0.5;
 }
 
+/* ---------- Disappearance counter (static snapshot) ------- */
+.dcounter {
+  margin: 0 0 2rem;
+  padding: 1.75rem 1.75rem 1.5rem;
+  background: var(--bg);
+  border: 1px solid #1f1f1f;
+  border-left: 3px solid var(--accent-red);
+  text-align: center;
+}
+
+.dcounter__label {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg);
+  opacity: 0.7;
+  margin-bottom: 0.45rem;
+  line-height: 1.4;
+}
+
+.dcounter__label-prefix {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--accent-red);
+  border: 1px solid var(--accent-red);
+  padding: 0.05em 0.45em;
+  margin-right: 0.55em;
+  vertical-align: 0.1em;
+  font-weight: 700;
+}
+
+.dcounter__total {
+  font-family: var(--mono);
+  font-size: clamp(1.4rem, 6vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-red);
+  text-shadow:
+    0 0 4px var(--accent-red),
+    0 0 22px rgba(192, 57, 43, 0.18);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  white-space: nowrap;
+  margin: 0.25rem 0 0.45rem;
+}
+
+.dcounter__sub {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--fg);
+  opacity: 0.7;
+  margin-bottom: 0.85rem;
+  line-height: 1.5;
+}
+
+.dcounter__provenance {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: rgba(232, 230, 223, 0.55);
+  line-height: 1.55;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .dcounter {
+    padding: 1.35rem 0.9rem 1.15rem;
+  }
+}
+
 /* ---------- Pending-verification banner ------------------- */
 .counter-banner {
   margin: 0 0 2rem;
@@ -686,6 +757,68 @@ td {
 
 .source-card__links a:hover {
   text-shadow: 0 0 6px var(--led);
+}
+
+/* ---------- Changelog ------------------------------------- */
+.changelog-intro {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin: 0 0 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #181818;
+}
+
+.changelog-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.changelog-entry {
+  border-left: 2px solid #2a2a2a;
+  padding: 0.65rem 0 0.65rem 1rem;
+  background: transparent;
+}
+
+.changelog-entry__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.9rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  opacity: 0.65;
+}
+
+.changelog-entry__date {
+  color: var(--fg);
+  letter-spacing: 0.03em;
+}
+
+.changelog-entry__hash {
+  font-family: var(--mono);
+  background: transparent;
+  border: 1px solid #1e1e1e;
+  padding: 0 0.4em;
+  color: var(--led);
+  opacity: 0.85;
+}
+
+.changelog-entry__diff {
+  color: var(--fg);
+  opacity: 0.55;
+  font-size: 0.68rem;
+}
+
+.changelog-entry__message {
+  margin: 0.35rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  color: var(--fg);
+  line-height: 1.55;
 }
 
 /* ---------- Methodology / formula block ------------------- */
