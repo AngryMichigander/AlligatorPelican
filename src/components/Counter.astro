@@ -13,9 +13,12 @@ const gate = evaluateLaunchGate(inputs, sources);
 // Cast via Number() to satisfy TypeScript's string-typed import.meta.env.
 const BUILD_TS: number = Number(import.meta.env.BUILD_TIMESTAMP_MS) || Date.now();
 
-// Build-time total (same formula as client; used for noscript + initial render)
+// Build-time total (deterministic SSG value used for noscript + initial render).
+// Must use BUILD_TS only — Date.now() at SSG time would vary between builds and
+// break the deterministic-build acceptance criterion (§8).
+// The client script applies Math.max(Date.now(), buildTimestampMs) for clock-skew.
 const facilityOpenedAtMs = inputs.facilityOpenedAt ? Date.parse(inputs.facilityOpenedAt) : 0;
-const referenceMs = Math.max(Date.now(), BUILD_TS);
+const referenceMs = BUILD_TS;
 const buildTimeTotal = Math.floor(
   (inputs.oneTimeConstructionCostUSD ?? 0) +
     (inputs.dailyOperatingCostUSD ?? 0) *

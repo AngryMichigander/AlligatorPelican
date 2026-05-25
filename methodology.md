@@ -52,6 +52,30 @@ When JavaScript is disabled, a `<noscript>` block renders:
 - The note "as computed at build time on YYYY-MM-DD HH:MM UTC — refresh for live tick"
 - The same citation
 
+## Verification Log
+
+**Date:** 2026-05-25  
+**Commit verified:** `9870e62` (HEAD at time of run)
+
+| Check | Result | Detail |
+|---|---|---|
+| `npm ci && npm run build` | ✅ PASS | 5 pages built; `dist/` produced |
+| `npm run audit:numbers` | ✅ PASS | 7 files, 24 `data-claim` occurrences, 0 violations |
+| `npm run audit:sources` | ⏭ DEFERRED | Live HTTP HEAD checks; deferred to CI on PR to avoid sandbox rate-limits. Script ready. |
+| `npm run a11y` | ✅ PASS | 5 routes, 0 critical/serious axe-core violations |
+| `npm run visual-check` | ✅ PASS | 15 checks (5 routes × 3 viewports: 375×667, 768×1024, 1280×800), 0 overflow failures. Screenshots in `artifacts/`. |
+| `<noscript>` fallback | ✅ PASS | Renders build-time total `$394,777,374` + timestamp `2026-05-25 23:31 UTC` + citation |
+| `rel="noopener noreferrer"` | ✅ PASS | All external links in all rendered pages carry the attribute |
+| `data-claim` → `<Cite>` | ✅ PASS | 24 claims, each has a sibling non-retracted `<Cite/>` (via `audit:numbers`) |
+| Deterministic build | ✅ PASS | Two sequential builds with same `SOURCE_DATE_EPOCH` produce identical SHA-256 checksums for all 38 output files |
+| Launch Gate | ✅ COUNTER VISIBLE | `confidence: "reported_estimate"`, sources `floridatrib-2026-03-burn-rate` + `cbs12-2026-03-burn-rate` (both named-outlet) → gate passes; UI shows "Reported estimate" confidence pill |
+
+**Bug fixed during verification:**  
+`src/components/Counter.astro` — SSG build-time total used `Math.max(Date.now(), BUILD_TS)`, causing `index.html` to differ between builds. Fixed to use `BUILD_TS` directly. The `Math.max(Date.now(), buildTimestampMs)` clock-skew guard is preserved in the client-side JS.
+
+**Note on formula documentation above:**  
+The formula `referenceMs = Math.max(Date.now(), BUILD_TIMESTAMP)` describes the **client-side live counter** (correct). The **SSG noscript value** uses `BUILD_TIMESTAMP` alone for determinism.
+
 ## Future: IPFS Snapshot
 
 After launch is stable, pin the build output for permanent archival:
