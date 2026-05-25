@@ -300,9 +300,9 @@ pre code {
 
 .counter-live__total {
   font-family: var(--mono);
-  font-size: clamp(2.5rem, 9vw, 6rem);
+  font-size: clamp(1.6rem, 7.5vw, 5rem);
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   color: var(--led);
   text-shadow:
     0 0 4px var(--led),
@@ -310,6 +310,7 @@ pre code {
   min-height: 1.15em;
   font-variant-numeric: tabular-nums;
   line-height: 1.05;
+  white-space: nowrap;
 }
 
 .counter-live__noscript {
@@ -517,26 +518,174 @@ td {
   color: var(--fg);
 }
 
-/* ---------- Sources page ---------------------------------- */
-.sources-table-wrap {
-  overflow-x: auto;
-  margin-top: 1.5rem;
+/* ---------- Sources page (card list) --------------------- */
+.sources-summary {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin: 0 0 1rem;
 }
 
-.source-row--retracted td {
-  opacity: 0.35;
+.sources-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #181818;
+  margin-bottom: 1.5rem;
 }
 
-.retracted-badge {
-  color: var(--accent-red);
-  font-size: 0.75rem;
-  font-weight: 600;
+.sources-totals strong {
+  color: var(--led);
+  font-weight: 700;
 }
 
-.active-badge {
+.source-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.source-card {
+  border: 1px solid #1e1e1e;
+  border-left: 3px solid #2a2a2a;
+  padding: 1.1rem 1.25rem 1rem;
+  background: #050505;
+  scroll-margin-top: 1.5rem;
+}
+
+.source-card:target {
+  border-left-color: var(--led);
+  background: #0a0905;
+}
+
+.source-card--retracted {
+  border-left-color: var(--accent-red);
+  opacity: 0.55;
+}
+
+.source-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.65rem;
+  margin-bottom: 0.55rem;
+}
+
+.source-card__id {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--fg);
+  opacity: 0.55;
+}
+
+.source-card__tag {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.1em 0.55em;
+  border: 1px solid currentColor;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.source-card__tag--primary {
   color: #4ade80;
-  font-size: 0.75rem;
-  font-weight: 600;
+}
+
+.source-card__tag--outlet {
+  color: var(--led);
+  opacity: 0.85;
+}
+
+.source-card__tag--retracted {
+  color: var(--accent-red);
+}
+
+.source-card__title {
+  font-family: var(--sans);
+  font-size: 0.98rem;
+  font-weight: 700;
+  font-variant: normal;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--fg);
+  border: none;
+  padding: 0;
+  margin: 0 0 0.35rem;
+  line-height: 1.35;
+}
+
+/* Override the global section h2::before for source titles only */
+.source-card .source-card__title::before { content: none; }
+
+.source-card__meta {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--fg);
+  opacity: 0.65;
+  margin: 0 0 0.7rem;
+  line-height: 1.55;
+}
+
+.source-card__publisher { font-weight: 700; color: var(--fg); }
+
+.source-card__sep { margin: 0 0.4rem; opacity: 0.5; }
+
+.source-card__claim {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--fg);
+  opacity: 0.92;
+  margin: 0 0 0.75rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid #2a2a2a;
+}
+
+.source-card__provenance {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--fg);
+  opacity: 0.5;
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.02em;
+}
+
+.source-card__retracted-detail {
+  color: var(--accent-red);
+  opacity: 0.85;
+}
+
+.source-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.4rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.source-card__links a {
+  color: var(--led);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.source-card__links a:hover {
+  text-shadow: 0 0 6px var(--led);
 }
 
 /* ---------- Methodology / formula block ------------------- */
@@ -592,11 +741,11 @@ td {
   }
 
   .counter-live {
-    padding: 1.75rem 1rem 1.35rem;
+    padding: 1.5rem 0.75rem 1.25rem;
   }
 
   .counter-live__total {
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
   }
 
   .counter-banner {

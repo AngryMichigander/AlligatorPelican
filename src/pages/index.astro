@@ -2,6 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Counter from '../components/Counter.astro';
 import Cite from '../components/Cite.astro';
+
+// Counter rendered once in the hero (it's the centerpiece). The Cost section
+// below references the figure via cited prose; do not duplicate the counter UI.
 ---
 
 <Base title="AlligatorPelican — the cost, in dollars and lives">
@@ -37,7 +40,6 @@ import Cite from '../components/Cite.astro';
 
   <section>
     <h2>The Cost</h2>
-    <Counter />
     <ul>
       <li data-claim="daily-burn-rate">
         State records show Florida spent more than $1.2 million per day operating the facility.<Cite id="floridatrib-2026-03-burn-rate" /><Cite id="cbs12-2026-03-burn-rate" />

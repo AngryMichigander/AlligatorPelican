@@ -3,64 +3,92 @@ import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
 const sources = await getCollection('sources');
+
+// Show primary sources first, then named-outlet; within each, alphabetize by id.
+const sorted = sources.slice().sort((a, b) => {
+  const ap = a.data.primarySource ? 0 : 1;
+  const bp = b.data.primarySource ? 0 : 1;
+  if (ap !== bp) return ap - bp;
+  return a.data.id.localeCompare(b.data.id);
+});
+
+const primaryCount = sources.filter((s) => s.data.primarySource).length;
+const outletCount = sources.length - primaryCount;
+const retractedCount = sources.filter((s) => s.data.retracted).length;
 ---
 
 <Base title="Sources">
   <h1>Sources</h1>
-  <p>All citations used on this site. Retracted sources are retained for transparency.</p>
+  <p class="sources-summary">
+    All citations used on this site, sorted by type. Retracted sources are
+    retained for transparency.
+  </p>
+
+  <div class="sources-totals">
+    <span><strong>{sources.length}</strong> total</span>
+    <span><strong>{primaryCount}</strong> primary</span>
+    <span><strong>{outletCount}</strong> named outlet</span>
+    {retractedCount > 0 && <span><strong>{retractedCount}</strong> retracted</span>}
+  </div>
 
   {sources.length === 0 ? (
     <p>No sources yet.</p>
   ) : (
-    <div class="sources-table-wrap">
-      <table class="sources-table">
-        <thead>
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Publisher</th>
-            <th scope="col">Author</th>
-            <th scope="col">Published</th>
-            <th scope="col">Accessed</th>
-            <th scope="col">Last Verified</th>
-            <th scope="col">Claim Supported</th>
-            <th scope="col">Primary</th>
-            <th scope="col">URL</th>
-            <th scope="col">Archive</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sources.map((source) => (
-            <tr id={source.id} class={source.data.retracted ? 'source-row--retracted' : ''}>
-              <td>{source.data.title}</td>
-              <td>{source.data.publisher}</td>
-              <td>{source.data.author ?? '—'}</td>
-              <td>{source.data.publishedDate}</td>
-              <td>{source.data.accessedDate}</td>
-              <td>{source.data.lastVerified}</td>
-              <td>{source.data.claimSupported}</td>
-              <td>{source.data.primarySource ? 'Yes' : 'No'}</td>
-              <td>
-                <a href={source.data.url} rel="noopener noreferrer" target="_blank">Link ↗</a>
-              </td>
-              <td>
-                <a href={source.data.archiveUrl} rel="noopener noreferrer" target="_blank">Archive ↗</a>
-              </td>
-              <td>
-                {source.data.retracted ? (
-                  <span class="retracted-badge">
-                    Retracted
-                    {source.data.retractedDate && ` ${source.data.retractedDate}`}
-                    {source.data.retractedReason && `: ${source.data.retractedReason}`}
-                  </span>
-                ) : (
-                  <span class="active-badge">Active</span>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <ol class="source-list">
+      {sorted.map((source) => (
+        <li
+          id={source.data.id}
+          class={`source-card ${source.data.retracted ? 'source-card--retracted' : ''}`}
+        >
+          <div class="source-card__header">
+            <code class="source-card__id">#{source.data.id}</code>
+            <span class={`source-card__tag source-card__tag--${source.data.primarySource ? 'primary' : 'outlet'}`}>
+              {source.data.primarySource ? 'PRIMARY' : 'NAMED OUTLET'}
+            </span>
+            {source.data.retracted && (
+              <span class="source-card__tag source-card__tag--retracted">RETRACTED</span>
+            )}
+          </div>
+
+          <h2 class="source-card__title">{source.data.title}</h2>
+
+          <div class="source-card__meta">
+            <span class="source-card__publisher">{source.data.publisher}</span>
+            {source.data.author && <span class="source-card__sep">·</span>}
+            {source.data.author && <span class="source-card__author">{source.data.author}</span>}
+            <span class="source-card__sep">·</span>
+            <time class="source-card__date">{source.data.publishedDate}</time>
+          </div>
+
+          <p class="source-card__claim">{source.data.claimSupported}</p>
+
+          <div class="source-card__provenance">
+            <span>Accessed {source.data.accessedDate}</span>
+            <span class="source-card__sep">·</span>
+            <span>Verified {source.data.lastVerified}</span>
+            {source.data.retracted && source.data.retractedDate && (
+              <>
+                <span class="source-card__sep">·</span>
+                <span class="source-card__retracted-detail">
+                  Retracted {source.data.retractedDate}
+                  {source.data.retractedReason && `: ${source.data.retractedReason}`}
+                </span>
+              </>
+            )}
+          </div>
+
+          <div class="source-card__links">
+            <a href={source.data.url} rel="noopener noreferrer" target="_blank">
+              READ SOURCE ↗
+            </a>
+            {source.data.archiveUrl && source.data.archiveUrl !== source.data.url && (
+              <a href={source.data.archiveUrl} rel="noopener noreferrer" target="_blank">
+                ARCHIVE ↗
+              </a>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
   )}
 </Base>
