@@ -1,8 +1,8 @@
 {
-  "facilityOpenedAt": null,
+  "facilityOpenedAt": "2025-07-01T00:00:00Z",
   "oneTimeConstructionCostUSD": null,
-  "dailyOperatingCostUSD": null,
-  "inputsSourceIds": [],
-  "lastVerified": null,
-  "confidence": "projection"
+  "dailyOperatingCostUSD": 1200000,
+  "inputsSourceIds": ["floridatrib-2026-03-burn-rate", "cbs12-2026-03-burn-rate"],
+  "lastVerified": "2026-05-25",
+  "confidence": "reported_estimate"
 }

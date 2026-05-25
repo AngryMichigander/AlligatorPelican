@@ -1,9 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import Counter from '../components/Counter.astro';
+import Cite from '../components/Cite.astro';
 ---
 
-<Base title="AlligatorPelican">
+<Base title="AlligatorPelican — the cost, in dollars and lives">
   <section class="hero">
     <h1>alligatorpelican.com</h1>
     <p class="hero__tagline">the cost, in dollars and lives</p>
@@ -15,29 +16,97 @@ import Counter from '../components/Counter.astro';
 
   <section>
     <h2>What is Alligator Alcatraz?</h2>
-    <!-- T6: populate with cited bullets (location, purpose, opening date, operator, capacity) -->
-    <p>Content pending source verification.</p>
+    <ul>
+      <li data-claim="location">
+        The facility occupies Dade-Collier Training and Transition Airport inside Big Cypress National Preserve near Ochopee, Florida, in the Everglades.<Cite id="wlrn-2025-08-timeline" />
+      </li>
+      <li data-claim="operator">
+        It is operated by the Florida Division of Emergency Management — the first state-run facility in the US to hold federal immigration detainees.<Cite id="wlrn-2025-08-timeline" />
+      </li>
+      <li data-claim="opening-date">
+        The facility opened July 1, 2025, when President Donald Trump and DHS Secretary Kristi Noem toured the site.<Cite id="pbs-2025-07-first-detainees" />
+      </li>
+      <li data-claim="construction">
+        It was assembled in approximately eight days using aluminum-framed tents encircled by more than 28,000 feet of barbed wire, designed to hold up to 3,000 detainees.<Cite id="wlrn-2025-08-timeline" />
+      </li>
+      <li data-claim="naming">
+        The nickname "Alligator Alcatraz" was coined by Florida Attorney General James Uthmeier, referencing the remote, wildlife-filled terrain surrounding the site.<Cite id="wlrn-2025-08-timeline" />
+      </li>
+    </ul>
   </section>
 
   <section>
     <h2>The Cost</h2>
     <Counter />
-    <p>
-      Per-detainee comparisons pending primary-source data.
-      See <a href="/methodology">/methodology</a>.
-    </p>
+    <ul>
+      <li data-claim="daily-burn-rate">
+        State records show Florida spent more than $1.2 million per day operating the facility.<Cite id="floridatrib-2026-03-burn-rate" /><Cite id="cbs12-2026-03-burn-rate" />
+      </li>
+      <li data-claim="total-spending">
+        Florida's total immigration enforcement spending reached nearly $460 million in the year following the facility's opening.<Cite id="wusf-2026-05-total-spending" />
+      </li>
+      <li data-claim="fema-reimbursement">
+        FEMA approved a $608 million reimbursement for Florida's costs; initial payments began flowing to the state in May 2026.<Cite id="wgcu-2026-05-reimbursement" />
+      </li>
+      <li data-claim="emergency-fund">
+        Spending was drawn from Florida's Emergency Preparedness &amp; Response Fund, bypassing the standard legislative appropriation process.<Cite id="floridatrib-2026-03-burn-rate" />
+      </li>
+    </ul>
+    <p>See <a href="/methodology">/methodology</a> for counter formula, confidence level, and last-verified date.</p>
   </section>
 
   <section>
     <h2>Environmental Harm</h2>
-    <!-- T6: populate with cited Everglades wetland, endangered species, NEPA, water-table content -->
-    <p>Environmental impact section pending source verification.</p>
+    <ul>
+      <li data-claim="location-preserve">
+        The site is on lands within Big Cypress National Preserve perpetually leased to the Miccosukee Tribe of Indians of Florida.<Cite id="insideclimatenews-2025-08-injunction" />
+      </li>
+      <li data-claim="no-nepa-review">
+        Construction proceeded without a public comment period, environmental impact statement, or review under NEPA or the Endangered Species Act.<Cite id="insideclimatenews-2025-08-injunction" />
+      </li>
+      <li data-claim="paving-stormwater">
+        More than 800,000 square feet of new paving was installed without a stormwater treatment system, raising concerns about pollutants reaching the Everglades.<Cite id="wlrn-2025-08-environmental-ruling" />
+      </li>
+      <li data-claim="injunction">
+        U.S. District Judge Kathleen Williams issued a preliminary injunction on August 22, 2025, halting new detainee intake and additional construction pending environmental review.<Cite id="insideclimatenews-2025-08-injunction" />
+      </li>
+      <li data-claim="appeals-court-stay">
+        A three-judge 11th Circuit panel issued a stay, ruling the state-operated facility falls outside federal NEPA obligations, allowing the facility to remain open during appeal.<Cite id="cnn-2025-09-appeals-stay" />
+      </li>
+    </ul>
   </section>
 
   <section>
     <h2>Human Cost</h2>
-    <!-- T6: populate with cited detainee conditions, legal filings, medical/heat concerns -->
-    <p>Section pending source verification.</p>
+    <ul>
+      <li data-claim="overcrowding">
+        Lawmakers found 32 adult men per cage-style unit sharing one toilet; temperatures measured at 83&deg;F in housing areas and 85&deg;F in the medical intake area.<Cite id="nbcnews-2025-07-lawmakers-conditions" />
+      </li>
+      <li data-claim="food-sanitation">
+        Detainees reported worms in food, non-flushing toilets, floors flooded with fecal waste, and mosquitoes throughout the facility.<Cite id="cbsmiami-2025-07-worms-sewage" />
+      </li>
+      <li data-claim="conditions-general">
+        Amnesty International documented sleeping areas flooded with fecal matter, limited showers, insect exposure, lights on 24 hours a day, and inadequate food and water.<Cite id="wlrn-2025-12-amnesty-torture" />
+      </li>
+      <li data-claim="medical-care">
+        NBC News reported detainee accounts of unreliable medical treatment for chronic conditions, alongside fungus infestations and mosquito swarms.<Cite id="nbcnews-2025-07-detainee-conditions" />
+      </li>
+      <li data-claim="the-box">
+        Former detainees described a small outdoor cage called "the box," used as punishment: people shackled at wrists and feet, chained to the ground in the sun for hours without food or water.<Cite id="notus-2025-12-the-box" /><Cite id="wlrn-2025-12-amnesty-torture" />
+      </li>
+      <li data-claim="amnesty-torture">
+        Amnesty International stated in its December 2025 report that "the box" conditions would likely cause severe physical and psychological suffering and constitute torture.<Cite id="wgcu-2025-12-amnesty" />
+      </li>
+      <li data-claim="aclu-lawsuit">
+        The ACLU filed suit (H.C.R. v. Noem) in August 2025 alleging detainees were absent from ICE tracking systems and denied access to legal counsel.<Cite id="aclu-2025-08-lawsuit" />
+      </li>
+      <li data-claim="medical-neglect">
+        Prism Reports documented medical emergencies and inadequate medical care responses at the facility in August 2025.<Cite id="prism-2025-08-medical-neglect" />
+      </li>
+    </ul>
+    <p>
+      <strong>Correction / takedown contact:</strong> <a href="/about">see /about</a>.
+    </p>
   </section>
 
   <section>
