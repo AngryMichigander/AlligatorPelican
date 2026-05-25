@@ -1,0 +1,138 @@
+---
+import counterInputs from '../data/counter-inputs.json';
+import sourcesData from '../data/sources.json';
+import { evaluateLaunchGate } from '../lib/launch-gate.ts';
+import Cite from './Cite.astro';
+import type { CounterInputs, SourceRow } from '../lib/launch-gate.ts';
+
+const inputs = counterInputs as CounterInputs;
+const sources = sourcesData as SourceRow[];
+const gate = evaluateLaunchGate(inputs, sources);
+
+// BUILD_TIMESTAMP_MS is a number literal injected by vite.define in astro.config.mjs.
+// Cast via Number() to satisfy TypeScript's string-typed import.meta.env.
+const BUILD_TS: number = Number(import.meta.env.BUILD_TIMESTAMP_MS) || Date.now();
+
+// Build-time total (same formula as client; used for noscript + initial render)
+const facilityOpenedAtMs = inputs.facilityOpenedAt ? Date.parse(inputs.facilityOpenedAt) : 0;
+const referenceMs = Math.max(Date.now(), BUILD_TS);
+const buildTimeTotal = Math.floor(
+  (inputs.oneTimeConstructionCostUSD ?? 0) +
+    (inputs.dailyOperatingCostUSD ?? 0) *
+      (Math.max(0, referenceMs - facilityOpenedAtMs) / 86_400_000)
+);
+
+const buildTimestampStr =
+  new Date(BUILD_TS).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+
+const usd = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0,
+});
+
+const confidenceLabels: Record<string, string> = {
+  contracted: 'Contracted',
+  reported_estimate: 'Reported estimate',
+  projection: 'Projection',
+};
+
+const firstSourceId = inputs.inputsSourceIds[0] ?? null;
+const firstSourceValid =
+  firstSourceId !== null && sources.some((s) => s.id === firstSourceId && !s.retracted);
+---
+
+{
+  gate.showCounter ? (
+    <section class="counter-live" aria-label="Live taxpayer cost counter">
+      {/* Initial build-time value; JS replaces this in the live ticker */}
+      <div class="counter-live__total" id="counter-total" aria-live="polite" aria-atomic="true">
+        {usd.format(buildTimeTotal)}
+      </div>
+
+      <noscript>
+        <div class="counter-live__noscript">
+          <strong>{usd.format(buildTimeTotal)}</strong> — computed at build time on{' '}
+          {buildTimestampStr}. JavaScript is required for the live ticker.
+          {firstSourceValid && firstSourceId && <Cite id={firstSourceId} />}
+        </div>
+      </noscript>
+
+      <div class="counter-live__meta">
+        <span class={`confidence-pill confidence-pill--${inputs.confidence}`}>
+          {confidenceLabels[inputs.confidence] ?? inputs.confidence}
+        </span>
+        {inputs.lastVerified && (
+          <span class="counter-live__verified">Last verified: {inputs.lastVerified}</span>
+        )}
+      </div>
+
+      <p class="counter-live__formula">
+        Formula: <code>⌊construction_cost + daily_cost × days_elapsed⌋</code>, ticking once per
+        second.
+        {firstSourceValid && firstSourceId && (
+          <>
+            {' '}
+            Based on reported operating cost (
+            <Cite id={firstSourceId} />
+            ).
+          </>
+        )}
+      </p>
+
+      <script
+        define:vars={{
+          facilityOpenedAt: inputs.facilityOpenedAt,
+          oneTimeConstructionCostUSD: inputs.oneTimeConstructionCostUSD,
+          dailyOperatingCostUSD: inputs.dailyOperatingCostUSD,
+          buildTimestampMs: BUILD_TS,
+        }}
+      >
+        const el = document.getElementById('counter-total');
+        if (el) {
+          const fmt = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0,
+          });
+          const openedAtMs = facilityOpenedAt ? Date.parse(facilityOpenedAt) : 0;
+          let lastValue = -Infinity;
+
+          function updateCounter() {
+            const referenceMs = Math.max(Date.now(), buildTimestampMs);
+            const elapsedMs = Math.max(0, referenceMs - openedAtMs);
+            const total = Math.floor(
+              (oneTimeConstructionCostUSD ?? 0) +
+                (dailyOperatingCostUSD ?? 0) * (elapsedMs / 86_400_000)
+            );
+            // Monotonic non-decrease: never display a lower value than already shown
+            if (total > lastValue) {
+              lastValue = total;
+              el.textContent = fmt.format(total);
+            }
+          }
+
+          updateCounter();
+          setInterval(updateCounter, 1000);
+        }
+      </script>
+    </section>
+  ) : (
+    <section class="counter-banner" aria-label="Cost figures pending verification">
+      <p class="counter-banner__message">
+        Figures pending verification — site will update when primary sources confirm operating
+        cost.
+      </p>
+      {inputs.oneTimeConstructionCostUSD != null && firstSourceValid && firstSourceId && (
+        <p class="counter-banner__known">
+          Total appropriated for construction:{' '}
+          <strong>{usd.format(inputs.oneTimeConstructionCostUSD)}</strong>{' '}
+          <Cite id={firstSourceId} /> — see <a href="/sources">/sources</a>.
+        </p>
+      )}
+      <p class="counter-banner__reason">
+        <small>Gate status: {gate.reason}</small>
+      </p>
+    </section>
+  )
+}
