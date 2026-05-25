@@ -1,0 +1,31 @@
+---
+import sourcesData from '../data/sources.json';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+
+type SourceRow = (typeof sourcesData)[number];
+const source: SourceRow | undefined = (sourcesData as SourceRow[]).find((s) => s.id === id);
+
+if (!source) {
+  throw new Error(
+    `[Cite] Source id "${id}" not found in src/data/sources.json. Build aborted.`
+  );
+}
+
+const isRetracted = source.retracted === true;
+---
+
+{isRetracted ? (
+  <sup class="cite cite--retracted">
+    <s><a href={`/sources#${id}`}>{id}</a></s>{' '}
+    <span class="cite__retracted-label">(retracted — see <a href="/changelog">/changelog</a>)</span>
+  </sup>
+) : (
+  <sup class="cite">
+    <a href={`/sources#${id}`}>{id}</a>
+  </sup>
+)}
