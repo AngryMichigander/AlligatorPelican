@@ -25,6 +25,9 @@ jobs:
           # the commit log of src/data/sources.json + counter-inputs.json
           # AND so we can compute SOURCE_DATE_EPOCH from the same files.
           fetch-depth: 0
+          # Fetch vendor/network-manifest submodule so NetworkFooter.astro
+          # can resolve its import at build time.
+          submodules: recursive
 
       - name: Set up Node
         uses: actions/setup-node@v4
