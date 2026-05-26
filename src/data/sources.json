@@ -331,6 +331,38 @@
     "retractedDate": null
   },
   {
+    "id": "etymonline-alcatraz",
+    "title": "Alcatraz — Online Etymology Dictionary",
+    "publisher": "Online Etymology Dictionary (etymonline.com)",
+    "author": "Douglas Harper",
+    "url": "https://www.etymonline.com/word/Alcatraz",
+    "publishedDate": "2001-01-01",
+    "accessedDate": "2026-05-26",
+    "lastVerified": "2026-05-26",
+    "claimSupported": "The word 'Alcatraz' derives from the Spanish alcatraz ('pelican'), itself borrowed from Arabic (commonly traced to al-ġaṭṭās, 'the diver', or related forms). The name was applied by Spanish explorer Juan Manuel de Ayala to the San Francisco Bay island in 1775 as 'Isla de los Alcatraces' ('Island of the Pelicans'). The etymology is Spanish/Arabic, not from any Indigenous American language.",
+    "archiveUrl": "https://www.etymonline.com/word/Alcatraz",
+    "primarySource": true,
+    "retracted": false,
+    "retractedReason": null,
+    "retractedDate": null
+  },
+  {
+    "id": "lpotl-pain-in-the-everglades",
+    "title": "Pain in the Everglades — Last Podcast on the Left (Netflix)",
+    "publisher": "Netflix / Last Podcast on the Left",
+    "author": "Marcus Parks, Henry Zebrowski, Ed Larson",
+    "url": "https://www.netflix.com/title/82685756",
+    "publishedDate": "2026-05-22",
+    "accessedDate": "2026-05-26",
+    "lastVerified": "2026-05-26",
+    "claimSupported": "Episode 'Pain in the Everglades' of Last Podcast on the Left (Netflix), released 2026-05-22, in which Captain Ed Larson takes the hosts on an airboat tour of the Everglades and discusses Alligator Alcatraz alongside the pelican etymology. Cited here as the source that inspired the alligatorpelican.com domain name.",
+    "archiveUrl": "https://www.netflix.com/title/82685756",
+    "primarySource": false,
+    "retracted": false,
+    "retractedReason": null,
+    "retractedDate": null
+  },
+  {
     "id": "snopes-2025-09-disappeared-factcheck",
     "title": "Investigation found two-thirds of more than 1,800 detainees 'dropped off the grid' from 'Alligator Alcatraz'?",
     "publisher": "Snopes",

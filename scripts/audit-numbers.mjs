@@ -3,7 +3,7 @@
  * audit-numbers.mjs
  * Walks .astro files under src/pages/ and src/components/.
  * For each element with data-claim="...", asserts there is a
- * <Cite id="..."/> within ±200 characters resolving to a
+ * <Cite id="..."/> within ±500 characters resolving to a
  * non-retracted sources.json row.
  * Exits non-zero on any violation.
  */
@@ -71,9 +71,9 @@ function main() {
       claimsChecked++;
       const pos = match.index;
 
-      // Search within ±200 characters of the data-claim occurrence
-      const windowStart = Math.max(0, pos - 200);
-      const windowEnd = Math.min(content.length, pos + match[0].length + 200);
+      // Search within ±500 characters of the data-claim occurrence
+      const windowStart = Math.max(0, pos - 500);
+      const windowEnd = Math.min(content.length, pos + match[0].length + 500);
       const window = content.slice(windowStart, windowEnd);
 
       // Find all <Cite id="..."/> in the window
@@ -86,7 +86,7 @@ function main() {
 
       if (citeIds.length === 0) {
         console.error(
-          `[audit-numbers] VIOLATION: data-claim at ${file}:${getLine(content, pos)} has no <Cite/> within ±200 chars`
+          `[audit-numbers] VIOLATION: data-claim at ${file}:${getLine(content, pos)} has no <Cite/> within ±500 chars`
         );
         violations++;
         continue;

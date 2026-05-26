@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Cite from '../components/Cite.astro';
 ---
 
 <Base title="About">
@@ -16,6 +17,27 @@ import Base from '../layouts/Base.astro';
   </section>
 
   <section>
+    <h2>Origin of the name</h2>
+    <p>
+      "Alligator Alcatraz" is the nickname coined by Florida Attorney General James Uthmeier
+      for the immigration detention facility on the Dade-Collier airstrip in the Everglades.
+    </p>
+    <p data-claim="alcatraz-etymology">
+      "Alcatraz" itself is a Spanish word for <em>pelican</em>, borrowed in turn from
+      Arabic. Spanish explorer Juan Manuel de Ayala named San Francisco Bay's island
+      <em>Isla de los Alcatraces</em> — Island of the Pelicans — in 1775. The pelican
+      meaning is European, not Indigenous; the Ohlone name for that island was
+      <em>Metini</em>, "place of the dead."<Cite id="etymonline-alcatraz" />
+    </p>
+    <p data-claim="domain-name-inspiration">
+      The phrase "Alligator Pelican" — and this domain — was inspired by the Netflix-released
+      Last Podcast on the Left episode <em>Pain in the Everglades</em>, in which Captain
+      Ed Larson takes the hosts on an airboat tour of the Everglades and discusses the
+      facility and the pelican etymology.<Cite id="lpotl-pain-in-the-everglades" />
+    </p>
+  </section>
+
+  <section>
     <h2>Editorial Standards</h2>
     <p>
       Each factual assertion carries at least one citation linking to a non-retracted source.
@@ -27,7 +49,7 @@ import Base from '../layouts/Base.astro';
       Full editorial checklist and contribution guidelines:
       <a href="/methodology">/methodology</a> and
       <a
-        href="https://github.com/alligatorpelican/AlligatorPelican/blob/main/CONTRIBUTING.md"
+        href="https://github.com/AngryMichigander/AlligatorPelican/blob/main/CONTRIBUTING.md"
         rel="noopener noreferrer"
         target="_blank"
       >CONTRIBUTING.md on GitHub ↗</a>.

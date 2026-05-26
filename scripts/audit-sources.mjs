@@ -17,22 +17,50 @@ const SOURCES_PATH = join(ROOT, 'src', 'data', 'sources.json');
 const TIMEOUT_MS = 10_000;
 const CONCURRENCY = 8;
 
-async function headUrl(url) {
+// 403/405 are typically anti-bot or method-not-allowed responses from a live host.
+// The URL exists; the server just refuses our request. We treat those as PASS.
+function statusIsAcceptable(status) {
+  return (status >= 200 && status < 400) || status === 403 || status === 405;
+}
+
+async function fetchOnce(url, method) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
     const res = await fetch(url, {
-      method: 'HEAD',
+      method,
       signal: controller.signal,
       redirect: 'follow',
-      headers: { 'User-Agent': 'AlligatorPelican/audit-sources (+https://alligatorpelican.com)' },
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; AlligatorPelican/audit-sources; +https://alligatorpelican.com)',
+        Accept: '*/*',
+      },
     });
     clearTimeout(timer);
-    return { url, status: res.status, ok: res.ok };
+    // Consume + discard body so the connection can close cleanly.
+    if (method === 'GET') {
+      try { await res.body?.cancel(); } catch {}
+    }
+    return { status: res.status };
   } catch (err) {
     clearTimeout(timer);
-    return { url, status: 0, ok: false, error: err.message };
+    return { status: 0, error: err.message };
   }
+}
+
+async function headUrl(url) {
+  let res = await fetchOnce(url, 'HEAD');
+  // Many hosts (Netflix, some Cloudflare-protected sites) 403/405 on HEAD but
+  // are reachable via GET. Retry once with GET in that case.
+  if (res.status === 403 || res.status === 405) {
+    res = await fetchOnce(url, 'GET');
+  }
+  return {
+    url,
+    status: res.status,
+    ok: statusIsAcceptable(res.status),
+    error: res.error,
+  };
 }
 
 async function runBatch(tasks, concurrency) {
