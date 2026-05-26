@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import NetworkFooter from '../components/NetworkFooter.astro';
 
 interface Props {
   title?: string;
@@ -65,5 +66,6 @@ const pageTitle = title === 'AlligatorPelican' ? title : `${title} — Alligator
         <a href="/changelog">Changelog</a>
       </nav>
     </footer>
+    <NetworkFooter />
   </body>
 </html>
