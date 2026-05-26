@@ -1,0 +1,67 @@
+name: Deploy to Bunny
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# One in-flight deploy at a time; cancel older runs if a newer push lands.
+concurrency:
+  group: deploy-bunny-main
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout (with full history for SOURCE_DATE_EPOCH)
+        uses: actions/checkout@v4
+        with:
+          # Full history is required so build-changelog.mjs can read
+          # the commit log of src/data/sources.json + counter-inputs.json
+          # AND so we can compute SOURCE_DATE_EPOCH from the same files.
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compute SOURCE_DATE_EPOCH for deterministic build
+        id: epoch
+        run: |
+          EPOCH=$(git log -1 --format=%ct -- src/data/sources.json src/data/counter-inputs.json || true)
+          if [ -z "$EPOCH" ]; then EPOCH=$(date +%s); fi
+          echo "epoch=$EPOCH" >> "$GITHUB_OUTPUT"
+          echo "ms=$((EPOCH * 1000))" >> "$GITHUB_OUTPUT"
+          echo "SOURCE_DATE_EPOCH=$EPOCH BUILD_TIMESTAMP_MS=$((EPOCH * 1000))"
+
+      - name: Build
+        env:
+          SOURCE_DATE_EPOCH: ${{ steps.epoch.outputs.epoch }}
+          BUILD_TIMESTAMP_MS: ${{ steps.epoch.outputs.ms }}
+        run: npm run build
+
+      - name: Run citation + source audits
+        env:
+          AUDIT_TIMEOUT_MS: 10000
+        run: |
+          npm run audit:numbers
+          npm run audit:sources
+
+      - name: Deploy to Bunny Storage Zone and purge Pull Zone cache
+        env:
+          BUNNY_STORAGE_ZONE:     ${{ secrets.BUNNY_STORAGE_ZONE }}
+          BUNNY_STORAGE_PASSWORD: ${{ secrets.BUNNY_STORAGE_PASSWORD }}
+          BUNNY_STORAGE_REGION:   ${{ secrets.BUNNY_STORAGE_REGION }}
+          BUNNY_PULL_ZONE_ID:     ${{ secrets.BUNNY_PULL_ZONE_ID }}
+          BUNNY_API_KEY:          ${{ secrets.BUNNY_API_KEY }}
+        run: node scripts/deploy-bunny.mjs
