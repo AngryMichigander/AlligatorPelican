@@ -305,6 +305,16 @@ pre code {
 
 .hero__headline::before { content: none; }
 
+.hero__dek {
+  font-family: var(--mono);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--fg);
+  opacity: 0.78;
+  margin: -1.25rem 0 2.1rem;
+  max-width: 36rem;
+}
+
 .hero__methodology-link {
   font-size: 0.75rem;
   font-family: var(--mono);
