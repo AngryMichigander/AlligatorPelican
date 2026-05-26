@@ -159,22 +159,51 @@ pre code {
 }
 
 .site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   font-family: var(--sans);
-  font-variant: small-caps;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   letter-spacing: 0.18em;
-  color: var(--fg);
+  color: var(--led);
   text-decoration: none;
-  opacity: 0.55;
-  transition: opacity 0.1s;
+  transition: filter 0.15s, color 0.15s;
+}
+
+.site-logo__mark {
+  display: block;
+  color: var(--led);
+  filter: drop-shadow(0 0 4px rgba(255, 176, 0, 0.45));
+  transition: filter 0.15s;
+}
+
+.site-logo__text {
+  color: var(--fg);
+  opacity: 0.65;
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  transition: opacity 0.15s, color 0.15s;
 }
 
 .site-logo:hover {
-  color: var(--fg);
-  opacity: 1;
   text-decoration: none;
+}
+
+.site-logo:hover .site-logo__mark {
+  filter: drop-shadow(0 0 6px rgba(255, 176, 0, 0.85));
+}
+
+.site-logo:hover .site-logo__text {
+  color: var(--led);
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .site-logo__text {
+    display: none;
+  }
 }
 
 /* ---------- Site nav ------------------------------------- */
@@ -260,22 +289,21 @@ pre code {
   padding: 4rem 0 1.5rem;
 }
 
-.hero h1 {
-  font-size: clamp(1.4rem, 5vw, 2.4rem);
-  margin: 0 0 0.35rem;
-  letter-spacing: 0.14em;
+.hero__headline {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-variant: small-caps;
+  text-transform: uppercase;
+  font-size: clamp(1.6rem, 5.5vw, 3rem);
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  color: var(--fg);
+  margin: 0 0 2rem;
+  /* Defeat the global section h2::before that prepends >>>. The hero's
+     headline is h1; this is just defensive in case styling changes. */
 }
 
-.hero__tagline {
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  color: var(--fg);
-  /* 0.6 opacity → ~5.8:1 contrast on black — WCAG AA */
-  opacity: 0.6;
-  margin: 0 0 2.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
+.hero__headline::before { content: none; }
 
 .hero__methodology-link {
   font-size: 0.75rem;

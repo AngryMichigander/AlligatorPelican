@@ -20,7 +20,28 @@ const pageTitle = title === 'AlligatorPelican' ? title : `${title} — Alligator
   </head>
   <body>
     <header class="site-header">
-      <a href="/" class="site-logo">alligatorpelican.com</a>
+      <a href="/" class="site-logo" aria-label="alligatorpelican.com — home">
+        <svg
+          class="site-logo__mark"
+          viewBox="0 0 60 32"
+          width="60"
+          height="32"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="square"
+          stroke-linejoin="miter"
+          aria-hidden="true"
+          focusable="false"
+        >
+          {/* A */}
+          <path d="M5 30 L15 4 L25 30" />
+          <path d="M9 22 L21 22" />
+          {/* P */}
+          <path d="M35 30 L35 4 L47 4 A 6 6 0 0 1 47 16 L35 16" />
+        </svg>
+        <span class="site-logo__text">ALLIGATORPELICAN</span>
+      </a>
       <nav class="site-nav" aria-label="Main navigation">
         <a href="/#cost">Cost</a>
         <a href="/#harm">Harm</a>
