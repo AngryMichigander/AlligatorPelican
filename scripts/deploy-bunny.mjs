@@ -42,6 +42,13 @@ const STORAGE_HOST = STORAGE_REGION
   ? `https://${STORAGE_REGION}.storage.bunnycdn.com`
   : 'https://storage.bunnycdn.com';
 
+console.log(`[deploy-bunny] config:`);
+console.log(`  storage zone:  ${STORAGE_NAME}`);
+console.log(`  storage host:  ${STORAGE_HOST}`);
+console.log(`  region prefix: ${STORAGE_REGION || '(default / NYC)'}`);
+console.log(`  pull zone id:  ${PULL_ZONE_ID}`);
+console.log(`  delete orphans: ${DELETE_ORPHANS}`);
+
 async function walk(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   const out = [];
