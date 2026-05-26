@@ -37,7 +37,7 @@ Add these in the `AngryMichigander/AlligatorPelican` repo:
 
 | Secret name              | Value                                                        |
 | ------------------------ | ------------------------------------------------------------ |
-| `BUNNY_STORAGE_ZONE`     | Storage Zone name (e.g. `alligatorpelican`)                  |
+| `BUNNY_STORAGE_NAME`     | Storage Zone name (e.g. `alligatorpelican`)                  |
 | `BUNNY_STORAGE_PASSWORD` | Storage Zone password (shown on the zone's FTP/API page)     |
 | `BUNNY_STORAGE_REGION`   | Region prefix; blank for NYC, or `uk`/`de`/`sg`/`se`/`br`/`jh`/`la` |
 | `BUNNY_PULL_ZONE_ID`     | Numeric Pull Zone ID                                         |
@@ -53,7 +53,7 @@ SOURCE_DATE_EPOCH=$(git log -1 --format=%ct -- src/data/sources.json src/data/co
 BUILD_TIMESTAMP_MS=$((SOURCE_DATE_EPOCH * 1000)) \
 npm ci && npm run build
 
-BUNNY_STORAGE_ZONE=alligatorpelican \
+BUNNY_STORAGE_NAME=alligatorpelican \
 BUNNY_STORAGE_PASSWORD=… \
 BUNNY_STORAGE_REGION= \
 BUNNY_PULL_ZONE_ID=… \

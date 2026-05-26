@@ -7,7 +7,7 @@
  * but works locally if the env vars are set.
  *
  * Required env vars:
- *   BUNNY_STORAGE_ZONE       — storage zone slug, e.g. "alligatorpelican"
+ *   BUNNY_STORAGE_NAME       — storage zone slug, e.g. "alligatorpelican"
  *   BUNNY_STORAGE_PASSWORD   — the storage zone's password / API key (NOT the account-level key)
  *   BUNNY_STORAGE_REGION     — region prefix, e.g. "" for default NYC, "uk", "de", "sg", "se", "br", "jh", "la"
  *                              (see https://docs.bunny.net/reference/put_-storagezonename-path-filename)
@@ -22,7 +22,7 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import { join, relative, posix } from 'node:path';
 
-const required = ['BUNNY_STORAGE_ZONE', 'BUNNY_STORAGE_PASSWORD', 'BUNNY_PULL_ZONE_ID', 'BUNNY_API_KEY'];
+const required = ['BUNNY_STORAGE_NAME', 'BUNNY_STORAGE_PASSWORD', 'BUNNY_PULL_ZONE_ID', 'BUNNY_API_KEY'];
 for (const k of required) {
   if (!process.env[k]) {
     console.error(`[deploy-bunny] missing env var: ${k}`);
@@ -30,7 +30,7 @@ for (const k of required) {
   }
 }
 
-const STORAGE_ZONE = process.env.BUNNY_STORAGE_ZONE;
+const STORAGE_NAME = process.env.BUNNY_STORAGE_NAME;
 const STORAGE_PASSWORD = process.env.BUNNY_STORAGE_PASSWORD;
 const STORAGE_REGION = process.env.BUNNY_STORAGE_REGION ?? '';
 const PULL_ZONE_ID = process.env.BUNNY_PULL_ZONE_ID;
@@ -58,7 +58,7 @@ async function walk(dir) {
 
 async function listRemote(prefix = '') {
   // Bunny returns folders + files at a single level; recurse to get full list.
-  const url = `${STORAGE_HOST}/${STORAGE_ZONE}/${prefix}`;
+  const url = `${STORAGE_HOST}/${STORAGE_NAME}/${prefix}`;
   const r = await fetch(url, { headers: { AccessKey: STORAGE_PASSWORD, Accept: 'application/json' } });
   if (r.status === 404) return [];
   if (!r.ok) throw new Error(`list ${prefix}: HTTP ${r.status} ${await r.text()}`);
@@ -77,7 +77,7 @@ async function listRemote(prefix = '') {
 
 async function uploadFile(localPath, remotePath) {
   const buf = await readFile(localPath);
-  const url = `${STORAGE_HOST}/${STORAGE_ZONE}/${remotePath}`;
+  const url = `${STORAGE_HOST}/${STORAGE_NAME}/${remotePath}`;
   const r = await fetch(url, {
     method: 'PUT',
     headers: { AccessKey: STORAGE_PASSWORD, 'Content-Type': 'application/octet-stream' },
@@ -89,7 +89,7 @@ async function uploadFile(localPath, remotePath) {
 }
 
 async function deleteRemote(remotePath) {
-  const url = `${STORAGE_HOST}/${STORAGE_ZONE}/${remotePath}`;
+  const url = `${STORAGE_HOST}/${STORAGE_NAME}/${remotePath}`;
   const r = await fetch(url, { method: 'DELETE', headers: { AccessKey: STORAGE_PASSWORD } });
   if (!r.ok && r.status !== 404) {
     throw new Error(`delete ${remotePath}: HTTP ${r.status} ${await r.text()}`);
@@ -114,7 +114,7 @@ async function main() {
   }
 
   const localFiles = await walk(DIST);
-  console.log(`[deploy-bunny] uploading ${localFiles.length} files to ${STORAGE_ZONE}…`);
+  console.log(`[deploy-bunny] uploading ${localFiles.length} files to ${STORAGE_NAME}…`);
 
   // Concurrency: small pool so we don't blow Bunny's rate limit.
   const CONCURRENCY = 8;
