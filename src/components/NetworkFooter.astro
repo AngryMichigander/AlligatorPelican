@@ -1,0 +1,41 @@
+---
+import network from "../../vendor/network-manifest/network.json";
+const hub = network.sites.find((s) => s.role === "hub");
+const SELF_URL = "https://alligatorpelican.com";
+const members = network.sites.filter((s) => s.role !== "hub" && s.url !== SELF_URL);
+---
+<aside class="network-footer">
+  <p>
+    Part of the <a href={hub.url}>{network.network_name}</a> —
+    {members.map((s, i) => (
+      <>{i ? " · " : ""}<a href={s.url}>{s.name}</a></>
+    ))}
+  </p>
+</aside>
+<style>
+  .network-footer {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0.9rem var(--gutter) 1.5rem;
+    border-top: 1px solid var(--led-dim);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--fg);
+    opacity: 0.5;
+  }
+
+  .network-footer p {
+    margin: 0;
+    font-size: 0.72rem;
+  }
+
+  .network-footer a {
+    color: var(--fg);
+    text-decoration-color: var(--led-dim);
+  }
+
+  .network-footer a:hover {
+    color: var(--led);
+    opacity: 1;
+  }
+</style>

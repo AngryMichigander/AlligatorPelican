@@ -14,6 +14,7 @@
     "audit:numbers": "node scripts/audit-numbers.mjs",
     "a11y": "node scripts/a11y.mjs",
     "visual-check": "node scripts/visual-check.mjs",
+    "test:network": "node scripts/check-no-hardcoded-peers.mjs",
     "audit:all": "npm run audit:sources && npm run audit:numbers && npm run a11y && npm run visual-check"
   },
   "dependencies": {
