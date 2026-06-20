@@ -20,7 +20,7 @@
   "dependencies": {
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/space-grotesk": "^5.2.10",
-    "astro": "^6.3.7"
+    "astro": "^6.4.6"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.3",
